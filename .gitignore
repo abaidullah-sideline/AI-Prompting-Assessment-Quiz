@@ -1,0 +1,13 @@
+# Ignore Streamlit secrets
+.streamlit/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore Video files
+*.mp4
+*.webm
+
+# 🆕 Ignore your virtual environment
+streamlit_quiz/
