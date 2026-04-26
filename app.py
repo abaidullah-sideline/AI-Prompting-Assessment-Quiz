@@ -365,14 +365,18 @@ js = f"""
     pdoc.addEventListener('visibilitychange', par._antiCheatListener);
 
     // blur — catches window minimise, Alt+Tab, and switching to another app.
-    // Delay before acting so transient browser UI (e.g. save-password popup)
-    // that briefly steals focus and returns it doesn't falsely terminate the quiz.
+    // Browser dialogs (save-password, data-breach warning) also fire blur but
+    // return focus when dismissed. We cancel the timer on focus-return so only
+    // genuine focus loss (user never came back) terminates the quiz.
     par._antiCheatBlurListener = function() {{
-        setTimeout(function() {{
+        var t = setTimeout(function() {{
+            par.removeEventListener('focus', onFocusReturn);
             if (!par.document.hasFocus()) {{
                 triggerCheat();
             }}
-        }}, 700);
+        }}, 2500);
+        function onFocusReturn() {{ clearTimeout(t); }}
+        par.addEventListener('focus', onFocusReturn, {{ once: true }});
     }};
     par.addEventListener('blur', par._antiCheatBlurListener);
 }})();
