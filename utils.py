@@ -115,10 +115,8 @@ def send_result_email(username, score, level, recommendation):
     sender_email    = st.secrets["email_config"]["sender_email"]
     sender_password = st.secrets["email_config"]["sender_password"].replace(" ", "")
 
-    recipient_email = next(
-        (v for k, v in st.secrets["candidate_emails"].items() if k == username),
-        username,
-    )
+    # TEMP TESTING: redirect all emails to secondary address
+    recipient_email = "ramayabaidullah@gmail.com"
 
     # ── Build message (plain + HTML alternative) ─────────────────────────────
     message = MIMEMultipart("alternative")
