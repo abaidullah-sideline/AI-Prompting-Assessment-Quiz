@@ -6,61 +6,62 @@ import streamlit as st
 def _load(key):
     return json.loads(base64.b64decode(st.secrets["questions"][key]).decode("utf-8"))
 
-AI_ENGINEER_QUESTIONS  = _load("prompt_engineer")
-DEVELOPER_QUESTIONS_A  = _load("developer_a")
-DEVELOPER_QUESTIONS_B  = _load("developer_b")
-DEVELOPER_QUESTIONS_C  = _load("developer_c")
-QA_QUESTIONS           = _load("quality_assurance")
-UIUX_QUESTIONS         = _load("ui_ux")
-DEVOPS_QUESTIONS       = _load("devops")
-PM_QUESTIONS           = _load("product_manager")
+AI_ENGINEER_QUESTIONS   = _load("prompt_engineer")
+FRONTEND_QUESTIONS      = _load("frontend_engineer")
+BACKEND_QUESTIONS       = _load("backend_engineer")
+ANDROID_QUESTIONS       = _load("android_developer")
+IOS_QUESTIONS           = _load("ios_developer")
+QA_QUESTIONS            = _load("quality_assurance")
+UIUX_QUESTIONS          = _load("ui_ux")
+DEVOPS_QUESTIONS        = _load("devops")
+PM_QUESTIONS            = _load("product_manager")
 
 # ── QUIZ ASSIGNMENTS ──────────────────────────────────────────────────────────
 QUIZ_ASSIGNMENTS = {
-    "sharjeel@sideline.agency":     "prompt_engineer",
-    "anas@sideline.agency":          "developer_a",
+    "sharjeel@sideline.agency":      "prompt_engineer",
+    "anas@sideline.agency":          "backend_engineer",
     "farzam@sideline.agency":        "product_manager",
-    "hashim@sideline.agency":        "developer_b",
-    "nudrat@sideline.agency":        "developer_c",
-    "sardar@sideline.agency":        "developer_b",
-    "faisal@sideline.agency":        "developer_a",
-    "rahat@sideline.agency":         "developer_b",
+    "hashim@sideline.agency":        "backend_engineer",
+    "nudrat@sideline.agency":        "backend_engineer",
+    "sardar@sideline.agency":        "backend_engineer",
+    "faisal@sideline.agency":        "backend_engineer",
+    "rahat@sideline.agency":         "backend_engineer",
     "abdulqadir@sideline.agency":    "prompt_engineer",
     "samaika@sideline.agency":       "quality_assurance",
-    "arslan@sideline.agency":        "developer_c",
+    "arslan@sideline.agency":        "backend_engineer",
     "muzamil@sideline.agency":       "ui_ux",
     "arbaz@sideline.agency":         "product_manager",
     "bilal@sideline.agency":         "devops",
-    "zeeshan@sideline.agency":       "developer_a",
+    "zeeshan@sideline.agency":       "backend_engineer",
     "tayyab@sideline.agency":        "devops",
-    "mahnoor@sideline.agency":       "developer_b",
+    "mahnoor@sideline.agency":       "backend_engineer",
     "atsam@sideline.agency":         "prompt_engineer",
-    "Gulsher@sideline.agency":       "developer_c",
-    "danish@sideline.agency":        "developer_b",
-    "kawish@sideline.agency":        "developer_a",
-    "ahmad@sideline.agency":         "developer_a",
+    "Gulsher@sideline.agency":       "backend_engineer",
+    "danish@sideline.agency":        "backend_engineer",
+    "kawish@sideline.agency":        "backend_engineer",
+    "ahmad@sideline.agency":         "backend_engineer",
     "talharauf@sideline.agency":     "prompt_engineer",
     "rizwan@sideline.agency":        "devops",
     "maria@sideline.agency":         "ui_ux",
-    "sardarkhurram@sideline.agency": "developer_c",
+    "sardarkhurram@sideline.agency": "backend_engineer",
     "atif@sideline.agency":          "prompt_engineer",
-    "imad@sideline.agency":          "developer_b",
+    "imad@sideline.agency":          "backend_engineer",
     "rabia@sideline.agency":         "quality_assurance",
     "zainab@sideline.agency":        "product_manager",
-    "ahsan@sideline.agency":         "developer_a",
+    "ahsan@sideline.agency":         "backend_engineer",
     "kinza@sideline.agency":         "quality_assurance",
-    "mohsin@sideline.agency":        "developer_c",
-    "raheel@sideline.agency":        "developer_c",
+    "mohsin@sideline.agency":        "backend_engineer",
+    "raheel@sideline.agency":        "backend_engineer",
     "hashimhussain@sideline.agency": "ui_ux",
-    "sanum@sideline.agency":         "developer_b",
+    "sanum@sideline.agency":         "backend_engineer",
     "sana@sideline.agency":          "quality_assurance",
-    "sajjad@sideline.agency":        "developer_c",
+    "sajjad@sideline.agency":        "backend_engineer",
     "asma@sideline.agency":          "quality_assurance",
-    "touseef@sideline.agency":       "developer_c",
-    "meesum@sideline.agency":        "developer_a",
-    "umair@sideline.agency":         "developer_a",
+    "touseef@sideline.agency":       "backend_engineer",
+    "meesum@sideline.agency":        "backend_engineer",
+    "umair@sideline.agency":         "backend_engineer",
     "ramayabaidullah@gmail.com":     "prompt_engineer",
-    "abaidullah@sideline.agency":    "developer_c",
+    "abaidullah@sideline.agency":    "backend_engineer",
 }
 
 # ── QUIZ CONFIGS ──────────────────────────────────────────────────────────────
@@ -73,29 +74,37 @@ QUIZ_CONFIGS = {
         "tag_section": ("AI Ecosystem", "name every tool, model & framework you know"),
         "questions": AI_ENGINEER_QUESTIONS,
     },
-    "developer_a": {
-        "title": "Prompt Quiz — Developers",
-        "icon": "💻",
+    "frontend_engineer": {
+        "title": "Prompt Quiz — Frontend Engineers",
+        "icon": "🖥️",
         "color": "#34d399",
-        "topic": "Prompt Engineering for Developers",
-        "tag_section": ("Dev Ecosystem", "name every language, framework & AI tool you use"),
-        "questions": DEVELOPER_QUESTIONS_A,
+        "topic": "Prompt Engineering for Frontend Engineers",
+        "tag_section": ("Frontend Ecosystem", "name every framework, library, tool & AI assistant you use"),
+        "questions": FRONTEND_QUESTIONS,
     },
-    "developer_b": {
-        "title": "Prompt Quiz — Developers",
-        "icon": "💻",
-        "color": "#34d399",
-        "topic": "Prompt Engineering for Developers",
-        "tag_section": ("Dev Ecosystem", "name every language, framework & AI tool you use"),
-        "questions": DEVELOPER_QUESTIONS_B,
+    "backend_engineer": {
+        "title": "Prompt Quiz — Backend Engineers",
+        "icon": "⚡",
+        "color": "#60a5fa",
+        "topic": "Prompt Engineering for Backend Engineers",
+        "tag_section": ("Backend Ecosystem", "name every framework, database, cloud service & AI tool you use"),
+        "questions": BACKEND_QUESTIONS,
     },
-    "developer_c": {
-        "title": "Prompt Quiz — Developers",
-        "icon": "💻",
-        "color": "#34d399",
-        "topic": "Prompt Engineering for Developers",
-        "tag_section": ("Dev Ecosystem", "name every language, framework & AI tool you use"),
-        "questions": DEVELOPER_QUESTIONS_C,
+    "android_developer": {
+        "title": "Prompt Quiz — Android Developers",
+        "icon": "📱",
+        "color": "#4ade80",
+        "topic": "Prompt Engineering for Android Developers",
+        "tag_section": ("Android Ecosystem", "name every library, Jetpack component, tool & AI assistant you use"),
+        "questions": ANDROID_QUESTIONS,
+    },
+    "ios_developer": {
+        "title": "Prompt Quiz — iOS Developers",
+        "icon": "🍎",
+        "color": "#f472b6",
+        "topic": "Prompt Engineering for iOS Developers",
+        "tag_section": ("iOS Ecosystem", "name every framework, library, tool & AI assistant you use"),
+        "questions": IOS_QUESTIONS,
     },
     "quality_assurance": {
         "title": "Prompt Quiz — Quality Assurance",
