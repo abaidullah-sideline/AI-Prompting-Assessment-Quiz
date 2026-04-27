@@ -39,24 +39,30 @@ def score_scenario_with_llm(question, student_answer, expected_answer, max_point
     """
     client = Groq(api_key=st.secrets["api_keys"]["groq_api_key"])
 
-    prompt = f"""You are an expert prompt engineering assessor. Score the student's answer.
+    prompt = f"""You are a strict quiz assessor. Score the student's answer against the rubric below. Do NOT give the benefit of the doubt.
 
 TASK QUESTION:
 {question}
 
-GRADING RUBRIC (criteria a strong answer must address):
+GRADING RUBRIC — every item listed is a REQUIRED criterion:
 {expected_answer}
 
 STUDENT'S ANSWER:
 {student_answer}
 
-Score the answer from 0 to {max_points} using this scale:
-{max_points} — Addresses all rubric criteria, specific and actionable
-{max_points - 1} — Addresses most criteria, mostly specific
-{round(max_points * 0.6)} — Addresses some criteria, missing key elements
-{round(max_points * 0.4)} — Shows partial understanding, too vague
-1 — Minimal understanding, very incomplete
-0 — Off-topic, empty, or fewer than 10 meaningful words
+STRICT SCORING RULES:
+- A criterion that is not explicitly present in the student's answer is MISSING. Do not infer, assume, or credit implied knowledge.
+- Vague, generic, or keyword-only answers that lack specific application score no higher than {round(max_points * 0.4)}.
+- Partial credit requires demonstrated understanding, not just topic mentions.
+- A short answer covering all criteria outscores a long answer that misses key ones.
+
+SCORE SCALE:
+{max_points} — Every rubric criterion explicitly addressed, specific and actionable throughout
+{max_points - 1} — Nearly all criteria present; one is too vague or underdeveloped
+{round(max_points * 0.6)} — Some criteria addressed specifically; at least one key criterion missing
+{round(max_points * 0.4)} — Partially relevant; most criteria absent or only superficially mentioned
+1 — Minimal relevant content, very incomplete
+0 — Off-topic, empty, fewer than 10 meaningful words, or clearly guessing
 
 Reply with ONLY a single integer between 0 and {max_points}. No explanation."""
 
