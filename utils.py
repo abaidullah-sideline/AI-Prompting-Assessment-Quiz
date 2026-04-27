@@ -107,9 +107,56 @@ def get_llama_recommendation(username, score, topic, level, next_level):
         return "Keep up the good work and continue reviewing the core concepts!"
 
 
-def send_result_email(username, score, level, recommendation):
+def _build_answer_sheet_html(username, score, level, answer_log):
+    """Builds the admin-only answer sheet HTML section."""
+    rows = ""
+    for a in answer_log:
+        q_label = f"Q{a['id']} ({a['type'].upper()})"
+        pts     = f"{a['earned']}/{a['points']}"
+
+        if a["type"] == "mcq":
+            icon   = "✅" if a["correct"] else "❌"
+            detail = (
+                f"<b>Answer:</b> {a['user_answer']}<br>"
+                f"<b>Correct:</b> {a['correct_answer']}"
+            )
+            row_bg = "#f0fdf4" if a["correct"] else "#fff1f2"
+        else:
+            icon   = ""
+            detail = f"<b>Answer:</b> {a['user_answer']}"
+            row_bg = "#f8fafc"
+
+        rows += f"""
+        <tr style="background:{row_bg}">
+          <td style="padding:8px 10px;font-size:.78rem;color:#64748b;white-space:nowrap;vertical-align:top">{q_label}</td>
+          <td style="padding:8px 10px;font-size:.82rem;color:#1e293b;vertical-align:top">{a['text']}</td>
+          <td style="padding:8px 10px;font-size:.82rem;color:#1e293b;vertical-align:top">{detail}</td>
+          <td style="padding:8px 10px;font-size:.82rem;font-weight:700;color:#6366f1;white-space:nowrap;vertical-align:top;text-align:center">{icon} {pts}</td>
+        </tr>"""
+
+    return f"""
+  <hr style="border:none;border-top:2px solid #6366f1;margin:28px 0">
+  <h3 style="color:#6366f1;font-size:1rem;margin-bottom:4px">Answer Sheet — {username}</h3>
+  <p style="color:#64748b;font-size:.8rem;margin:0 0 12px">Score: {score} &nbsp;|&nbsp; Level: {level}</p>
+  <table style="width:100%;border-collapse:collapse;font-family:Arial,Helvetica,sans-serif">
+    <thead>
+      <tr style="background:#e0e7ff">
+        <th style="padding:8px 10px;text-align:left;font-size:.75rem;color:#4338ca">Q#</th>
+        <th style="padding:8px 10px;text-align:left;font-size:.75rem;color:#4338ca">Question</th>
+        <th style="padding:8px 10px;text-align:left;font-size:.75rem;color:#4338ca">User Answer</th>
+        <th style="padding:8px 10px;text-align:left;font-size:.75rem;color:#4338ca">Pts</th>
+      </tr>
+    </thead>
+    <tbody>{rows}
+    </tbody>
+  </table>"""
+
+
+def send_result_email(username, score, level, recommendation, answer_log=None):
     """
     Sends the quiz result email via Gmail SMTP (port 465, SSL).
+    User receives a clean result email; sender receives a separate
+    admin email that includes the full answer sheet.
     Returns (success: bool, error_message: str).
     """
     sender_email    = st.secrets["email_config"]["sender_email"]
@@ -120,13 +167,11 @@ def send_result_email(username, score, level, recommendation):
         username,
     )
 
-    # ── Build message (plain + HTML alternative) ─────────────────────────────
-    message = MIMEMultipart("alternative")
-    message["Subject"] = f"Your Quiz Results — {score} · {level}"
-    message["From"]    = sender_email
-    message["To"]      = recipient_email
-    if sender_email != recipient_email:
-        message["Cc"] = sender_email
+    # ── User email (clean result — no answer sheet) ───────────────────────────
+    user_msg = MIMEMultipart("alternative")
+    user_msg["Subject"] = f"Your Quiz Results — {score} · {level}"
+    user_msg["From"]    = sender_email
+    user_msg["To"]      = recipient_email
 
     plain = (
         f"Hello {username},\n\n"
@@ -165,19 +210,68 @@ def send_result_email(username, score, level, recommendation):
 </body>
 </html>"""
 
-    # Email client renders the last part first — attach HTML last
-    message.attach(MIMEText(plain, "plain"))
-    message.attach(MIMEText(html,  "html"))
+    user_msg.attach(MIMEText(plain, "plain"))
+    user_msg.attach(MIMEText(html,  "html"))
 
-    # ── Send via port 465 (SSL) ───────────────────────────────────────────────
+    # ── Admin email (result + full answer sheet) ──────────────────────────────
+    admin_msg = MIMEMultipart("alternative")
+    admin_msg["Subject"] = f"[Admin] {username} — {score} · {level}"
+    admin_msg["From"]    = sender_email
+    admin_msg["To"]      = sender_email
+
+    admin_plain = (
+        f"ADMIN COPY — {username}\n"
+        f"Score : {score}\nLevel : {level}\n\n"
+        f"Recommendation:\n{recommendation}\n\n"
+        f"--- ANSWERS ---\n"
+    )
+    if answer_log:
+        for a in answer_log:
+            admin_plain += f"\nQ{a['id']} ({a['type']}) [{a['earned']}/{a['points']}]\n"
+            admin_plain += f"  {a['text']}\n"
+            admin_plain += f"  Answer: {a['user_answer']}\n"
+            if a["type"] == "mcq":
+                admin_plain += f"  Correct: {a['correct_answer']}\n"
+
+    answer_sheet_html = _build_answer_sheet_html(username, score, level, answer_log or [])
+    admin_html = f"""<html>
+<body style="font-family:Arial,Helvetica,sans-serif;max-width:760px;margin:0 auto;padding:24px;color:#1e293b">
+  <h2 style="color:#6366f1;margin-bottom:4px">Admin Copy — Quiz Submission</h2>
+  <p style="color:#64748b;margin-top:0">Secure Exam Portal</p>
+  <hr style="border:none;border-top:1px solid #e2e8f0;margin:16px 0">
+  <p><strong>{username}</strong> has submitted their quiz.</p>
+
+  <div style="display:flex;gap:12px;margin:20px 0">
+    <div style="flex:1;background:#f1f5f9;border-radius:10px;padding:16px;text-align:center">
+      <p style="margin:0;font-size:.75rem;color:#64748b;text-transform:uppercase;letter-spacing:.06em">Final Score</p>
+      <p style="margin:6px 0 0;font-size:1.9rem;font-weight:800;color:#6366f1">{score}</p>
+    </div>
+    <div style="flex:1;background:#f1f5f9;border-radius:10px;padding:16px;text-align:center">
+      <p style="margin:0;font-size:.75rem;color:#64748b;text-transform:uppercase;letter-spacing:.06em">Skill Level</p>
+      <p style="margin:6px 0 0;font-size:1.9rem;font-weight:800;color:#8b5cf6">{level}</p>
+    </div>
+  </div>
+
+  <h3 style="color:#334155;font-size:1rem;margin-bottom:8px">AI Recommendation</h3>
+  <p style="color:#475569;line-height:1.6;background:#f8fafc;border-left:3px solid #6366f1;
+     padding:12px 16px;border-radius:0 8px 8px 0;margin:0">{recommendation}</p>
+  {answer_sheet_html}
+  <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0">
+  <p style="color:#94a3b8;font-size:.8rem;margin:0">Secure Exam Portal — admin notification</p>
+</body>
+</html>"""
+
+    admin_msg.attach(MIMEText(admin_plain, "plain"))
+    admin_msg.attach(MIMEText(admin_html,  "html"))
+
+    # ── Send both emails via port 465 (SSL) ───────────────────────────────────
     context = ssl.create_default_context()
     try:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
             server.login(sender_email, sender_password)
-            all_recipients = [recipient_email]
+            server.sendmail(sender_email, [recipient_email], user_msg.as_string())
             if sender_email != recipient_email:
-                all_recipients.append(sender_email)
-            server.sendmail(sender_email, all_recipients, message.as_string())
+                server.sendmail(sender_email, [sender_email], admin_msg.as_string())
         return True, ""
     except smtplib.SMTPAuthenticationError:
         return False, (

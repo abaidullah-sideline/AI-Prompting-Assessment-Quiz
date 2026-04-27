@@ -551,26 +551,43 @@ st.markdown(
 
 if st.button("🚀  Submit Quiz", use_container_width=True, type="primary"):
     score = 0
+    answer_log = []
     with st.spinner("Grading and generating AI feedback…"):
         for q in QUESTIONS:
             qid = q["id"]
             if q["type"] == "mcq":
-                if st.session_state.get(f"q{qid}_answer") == q["answer"]:
-                    score += q["points"]
+                user_ans = st.session_state.get(f"q{qid}_answer")
+                earned   = q["points"] if user_ans == q["answer"] else 0
+                score   += earned
+                answer_log.append({"id": qid, "type": "mcq", "text": q["text"],
+                    "user_answer": user_ans or "(no answer)",
+                    "correct_answer": q["answer"], "correct": earned > 0,
+                    "earned": earned, "points": q["points"]})
             elif q["type"] == "scenario":
                 answer = (st.session_state.get(f"q{qid}_answer") or "").strip()
-                if answer:
-                    score += score_scenario_with_llm(
-                        q["text"], answer, q["expected_answer"], q["points"]
-                    )
+                earned = score_scenario_with_llm(
+                    q["text"], answer, q["expected_answer"], q["points"]
+                ) if answer else 0
+                score += earned
+                answer_log.append({"id": qid, "type": "scenario", "text": q["text"],
+                    "user_answer": answer or "(no answer)",
+                    "earned": earned, "points": q["points"]})
             elif q["type"] == "tags":
-                score += min(len(st.session_state.get(f"q{qid}_tags", [])), q["points"])
+                tags   = st.session_state.get(f"q{qid}_tags", [])
+                earned = min(len(tags), q["points"])
+                score += earned
+                answer_log.append({"id": qid, "type": "tags", "text": q["text"],
+                    "user_answer": ", ".join(tags) if tags else "(none)",
+                    "earned": earned, "points": q["points"]})
             elif q["type"] == "text":
                 answer = (st.session_state.get(f"q{qid}_answer") or "").strip()
-                if answer:
-                    score += score_scenario_with_llm(
-                        q["text"], answer, q["expected_answer"], q["points"]
-                    )
+                earned = score_scenario_with_llm(
+                    q["text"], answer, q["expected_answer"], q["points"]
+                ) if answer else 0
+                score += earned
+                answer_log.append({"id": qid, "type": "text", "text": q["text"],
+                    "user_answer": answer or "(no answer)",
+                    "earned": earned, "points": q["points"]})
 
         final_score = f"{score}/{TOTAL_PTS}"
         level_label, level_name, next_label, next_name = get_level(score)
@@ -581,7 +598,8 @@ if st.button("🚀  Submit Quiz", use_container_width=True, type="primary"):
             quiz_cfg["topic"], level_str, next_str
         )
         email_sent, email_error = send_result_email(
-            st.session_state.current_user, final_score, level_str, ai_feedback
+            st.session_state.current_user, final_score, level_str, ai_feedback,
+            answer_log
         )
 
     st.session_state.submitted   = True
