@@ -1,5 +1,5 @@
-# Ignore Streamlit secrets
-.streamlit/
+# Ignore Streamlit secrets (but allow config.toml)
+.streamlit/secrets.toml
 
 # Ignore Python cache
 __pycache__/
