@@ -6,9 +6,10 @@ import streamlit as st
 def _load(key):
     return json.loads(base64.b64decode(st.secrets["questions"][key]).decode("utf-8"))
 
-AI_ENGINEER_QUESTIONS   = _load("prompt_engineer")
-FRONTEND_QUESTIONS      = _load("frontend_engineer")
-BACKEND_QUESTIONS       = _load("backend_engineer")
+AI_ENGINEER_QUESTIONS      = _load("prompt_engineer")
+FRONTEND_VUE_QUESTIONS     = _load("frontend_engineer_vue")
+FRONTEND_REACT_QUESTIONS   = _load("frontend_engineer_react")
+BACKEND_QUESTIONS          = _load("backend_engineer")
 ANDROID_QUESTIONS       = _load("android_developer")
 IOS_QUESTIONS           = _load("ios_developer")
 QA_QUESTIONS            = _load("quality_assurance")
@@ -25,7 +26,7 @@ QUIZ_ASSIGNMENTS = {
     "nudrat@sideline.agency":        "ios_developer",
     "sardar@sideline.agency":        "android_developer",
     "faisal@sideline.agency":        "backend_engineer",
-    "rahat@sideline.agency":         "frontend_engineer",
+    "rahat@sideline.agency":         "frontend_engineer_vue",
     "abdulqadir@sideline.agency":    "prompt_engineer",
     "samaika@sideline.agency":       "quality_assurance",
     "arslan@sideline.agency":        "backend_engineer",
@@ -38,7 +39,7 @@ QUIZ_ASSIGNMENTS = {
     "atsam@sideline.agency":         "prompt_engineer",
     "Gulsher@sideline.agency":       "ios_developer",
     "danish@sideline.agency":        "backend_engineer",
-    "kawish@sideline.agency":        "frontend_engineer",
+    "kawish@sideline.agency":        "frontend_engineer_vue",
     "ahmad@sideline.agency":         "ios_developer",
     "talharauf@sideline.agency":     "prompt_engineer",
     "rizwan@sideline.agency":        "devops",
@@ -48,9 +49,9 @@ QUIZ_ASSIGNMENTS = {
     "imad@sideline.agency":          "android_developer",
     "rabia@sideline.agency":         "quality_assurance",
     "zainab@sideline.agency":        "product_manager",
-    "ahsan@sideline.agency":         "frontend_engineer",
+    "ahsan@sideline.agency":         "frontend_engineer_vue",
     "kinza@sideline.agency":         "quality_assurance",
-    "mohsin@sideline.agency":        "frontend_engineer",
+    "mohsin@sideline.agency":        "frontend_engineer_vue",
     "raheel@sideline.agency":        "android_developer",
     "hashimhussain@sideline.agency": "ui_ux",
     "sanum@sideline.agency":         "ios_developer",
@@ -74,13 +75,21 @@ QUIZ_CONFIGS = {
         "tag_section": ("AI Ecosystem", "name every tool, model & framework you know"),
         "questions": AI_ENGINEER_QUESTIONS,
     },
-    "frontend_engineer": {
-        "title": "Prompt Quiz — Frontend Engineers",
+    "frontend_engineer_vue": {
+        "title": "Prompt Quiz — Frontend Engineers (Vue)",
         "icon": "🖥️",
         "color": "#34d399",
-        "topic": "Prompt Engineering for Frontend Engineers",
+        "topic": "Prompt Engineering for Frontend Engineers (Vue.js)",
         "tag_section": ("Frontend Ecosystem", "name every framework, library, tool & AI assistant you use"),
-        "questions": FRONTEND_QUESTIONS,
+        "questions": FRONTEND_VUE_QUESTIONS,
+    },
+    "frontend_engineer_react": {
+        "title": "Prompt Quiz — Frontend Engineers (React)",
+        "icon": "🖥️",
+        "color": "#61dafb",
+        "topic": "Prompt Engineering for Frontend Engineers (React)",
+        "tag_section": ("Frontend Ecosystem", "name every framework, library, tool & AI assistant you use"),
+        "questions": FRONTEND_REACT_QUESTIONS,
     },
     "backend_engineer": {
         "title": "Prompt Quiz — Backend Engineers",
