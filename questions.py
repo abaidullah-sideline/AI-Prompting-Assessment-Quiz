@@ -9,7 +9,8 @@ def _load(key):
 AI_ENGINEER_QUESTIONS      = _load("prompt_engineer")
 FRONTEND_VUE_QUESTIONS     = _load("frontend_engineer_vue")
 FRONTEND_REACT_QUESTIONS   = _load("frontend_engineer_react")
-BACKEND_QUESTIONS          = _load("backend_engineer")
+BACKEND_RUBY_QUESTIONS     = _load("backend_engineer_ruby")
+BACKEND_DOTNET_QUESTIONS   = _load("backend_engineer_dotnet")
 ANDROID_QUESTIONS       = _load("android_developer")
 IOS_QUESTIONS           = _load("ios_developer")
 QA_QUESTIONS            = _load("quality_assurance")
@@ -20,25 +21,25 @@ PM_QUESTIONS            = _load("product_manager")
 # ── QUIZ ASSIGNMENTS ──────────────────────────────────────────────────────────
 QUIZ_ASSIGNMENTS = {
     "sharjeel@sideline.agency":      "prompt_engineer",
-    "anas@sideline.agency":          "backend_engineer",
+    "anas@sideline.agency":          "backend_engineer_dotnet",
     "farzam@sideline.agency":        "product_manager",
-    "hashim@sideline.agency":        "backend_engineer",
+    "hashim@sideline.agency":        "backend_engineer_dotnet",
     "nudrat@sideline.agency":        "ios_developer",
     "sardar@sideline.agency":        "android_developer",
-    "faisal@sideline.agency":        "backend_engineer",
+    "faisal@sideline.agency":        "backend_engineer_dotnet",
     "rahat@sideline.agency":         "frontend_engineer_vue",
     "abdulqadir@sideline.agency":    "prompt_engineer",
     "samaika@sideline.agency":       "quality_assurance",
-    "arslan@sideline.agency":        "backend_engineer",
+    "arslan@sideline.agency":        "backend_engineer_dotnet",
     "muzamil@sideline.agency":       "ui_ux",
     "arbaz@sideline.agency":         "product_manager",
     "bilal@sideline.agency":         "devops",
-    "zeeshan@sideline.agency":       "backend_engineer",
+    "zeeshan@sideline.agency":       "backend_engineer_dotnet",
     "tayyab@sideline.agency":        "devops",
     "mahnoor@sideline.agency":       "android_developer",
     "atsam@sideline.agency":         "prompt_engineer",
     "Gulsher@sideline.agency":       "ios_developer",
-    "danish@sideline.agency":        "backend_engineer",
+    "danish@sideline.agency":        "backend_engineer_dotnet",
     "kawish@sideline.agency":        "frontend_engineer_vue",
     "ahmad@sideline.agency":         "ios_developer",
     "talharauf@sideline.agency":     "prompt_engineer",
@@ -56,13 +57,13 @@ QUIZ_ASSIGNMENTS = {
     "hashimhussain@sideline.agency": "ui_ux",
     "sanum@sideline.agency":         "ios_developer",
     "sana@sideline.agency":          "quality_assurance",
-    "sajjad@sideline.agency":        "backend_engineer",
+    "sajjad@sideline.agency":        "backend_engineer_dotnet",
     "asma@sideline.agency":          "quality_assurance",
-    "touseef@sideline.agency":       "backend_engineer",
+    "touseef@sideline.agency":       "backend_engineer_dotnet",
     "meesum@sideline.agency":        "ios_developer",
-    "umair@sideline.agency":         "backend_engineer",
+    "umair@sideline.agency":         "backend_engineer_dotnet",
     "ramayabaidullah@gmail.com":     "prompt_engineer",
-    "abaidullah@sideline.agency":    "backend_engineer",
+    "abaidullah@sideline.agency":    "backend_engineer_dotnet",
 }
 
 # ── QUIZ CONFIGS ──────────────────────────────────────────────────────────────
@@ -91,13 +92,21 @@ QUIZ_CONFIGS = {
         "tag_section": ("Frontend Ecosystem", "name every framework, library, tool & AI assistant you use"),
         "questions": FRONTEND_REACT_QUESTIONS,
     },
-    "backend_engineer": {
-        "title": "Prompt Quiz — Backend Engineers",
+    "backend_engineer_ruby": {
+        "title": "Prompt Quiz — Backend Engineers (Ruby on Rails)",
+        "icon": "⚡",
+        "color": "#ef4444",
+        "topic": "Prompt Engineering for Backend Engineers (Ruby on Rails)",
+        "tag_section": ("Backend Ecosystem", "name every gem, framework, database, cloud service & AI tool you use"),
+        "questions": BACKEND_RUBY_QUESTIONS,
+    },
+    "backend_engineer_dotnet": {
+        "title": "Prompt Quiz — Backend Engineers (.NET)",
         "icon": "⚡",
         "color": "#60a5fa",
-        "topic": "Prompt Engineering for Backend Engineers",
-        "tag_section": ("Backend Ecosystem", "name every framework, database, cloud service & AI tool you use"),
-        "questions": BACKEND_QUESTIONS,
+        "topic": "Prompt Engineering for Backend Engineers (.NET)",
+        "tag_section": ("Backend Ecosystem", "name every NuGet package, framework, database, cloud service & AI tool you use"),
+        "questions": BACKEND_DOTNET_QUESTIONS,
     },
     "android_developer": {
         "title": "Prompt Quiz — Android Developers",
