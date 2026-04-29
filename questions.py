@@ -21,9 +21,9 @@ PM_QUESTIONS            = _load("product_manager")
 # ── QUIZ ASSIGNMENTS ──────────────────────────────────────────────────────────
 QUIZ_ASSIGNMENTS = {
     "sharjeel@sideline.agency":      "prompt_engineer",
-    "anas@sideline.agency":          "backend_engineer_dotnet",
+    "anas@sideline.agency":          "backend_engineer_ruby",
     "farzam@sideline.agency":        "product_manager",
-    "hashim@sideline.agency":        "backend_engineer_dotnet",
+    "hashim@sideline.agency":        "backend_engineer_ruby",
     "nudrat@sideline.agency":        "ios_developer",
     "sardar@sideline.agency":        "android_developer",
     "faisal@sideline.agency":        "backend_engineer_dotnet",
@@ -40,7 +40,7 @@ QUIZ_ASSIGNMENTS = {
     "atsam@sideline.agency":         "prompt_engineer",
     "Gulsher@sideline.agency":       "ios_developer",
     "danish@sideline.agency":        "backend_engineer_dotnet",
-    "kawish@sideline.agency":        "frontend_engineer_vue",
+    "kawish@sideline.agency":        "frontend_engineer_react",
     "ahmad@sideline.agency":         "ios_developer",
     "talharauf@sideline.agency":     "prompt_engineer",
     "rizwan@sideline.agency":        "devops",
