@@ -11,6 +11,7 @@ FRONTEND_VUE_QUESTIONS     = _load("frontend_engineer_vue")
 FRONTEND_REACT_QUESTIONS   = _load("frontend_engineer_react")
 BACKEND_RUBY_QUESTIONS     = _load("backend_engineer_ruby")
 BACKEND_DOTNET_QUESTIONS   = _load("backend_engineer_dotnet")
+BACKEND_ELIXIR_QUESTIONS   = _load("backend_engineer_elixir")
 ANDROID_QUESTIONS       = _load("android_developer")
 IOS_QUESTIONS           = _load("ios_developer")
 QA_QUESTIONS            = _load("quality_assurance")
@@ -107,6 +108,14 @@ QUIZ_CONFIGS = {
         "topic": "Prompt Engineering for Backend Engineers (.NET)",
         "tag_section": ("Backend Ecosystem", "name every NuGet package, framework, database, cloud service & AI tool you use"),
         "questions": BACKEND_DOTNET_QUESTIONS,
+    },
+    "backend_engineer_elixir": {
+        "title": "Prompt Quiz — Backend Engineers (Elixir)",
+        "icon": "💧",
+        "color": "#a855f7",
+        "topic": "Prompt Engineering for Backend Engineers (Elixir)",
+        "tag_section": ("Elixir Ecosystem", "name every library, OTP component, tool & AI assistant you use"),
+        "questions": BACKEND_ELIXIR_QUESTIONS,
     },
     "android_developer": {
         "title": "Prompt Quiz — Android Developers",
