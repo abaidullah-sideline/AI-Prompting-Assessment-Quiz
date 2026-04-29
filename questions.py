@@ -60,7 +60,7 @@ QUIZ_ASSIGNMENTS = {
     "sana@sideline.agency":          "quality_assurance",
     "sajjad@sideline.agency":        "backend_engineer_dotnet",
     "asma@sideline.agency":          "quality_assurance",
-    "touseef@sideline.agency":       "backend_engineer_dotnet",
+    "touseef@sideline.agency":       "backend_engineer_elixir",
     "meesum@sideline.agency":        "ios_developer",
     "umair@sideline.agency":         "backend_engineer_dotnet",
     "ramayabaidullah@gmail.com":     "prompt_engineer",
